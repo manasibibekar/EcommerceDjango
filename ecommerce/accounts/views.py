@@ -1,9 +1,27 @@
-from django.shortcuts import render, HttpResponseRedirect
+from django.shortcuts import render, HttpResponseRedirect, redirect
 from django.contrib.auth.models import User
 from django.contrib import messages
+from django.contrib.auth import authenticate, login, logout
 
 
 def login_page(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+
+        user_obj = User.objects.filter(username=email)
+        if not user_obj.exists():
+            messages.warning(request, 'Account does not exist.')
+            return HttpResponseRedirect(request.path_info)
+
+        user_obj = authenticate(username=email, password=password)
+        if user_obj:
+            login(request, user_obj)
+            return redirect('/')
+        else:
+            messages.warning(request, 'Wrong password.')
+            return HttpResponseRedirect(request.path_info)
+
     return render(request, 'accounts/login.html')
 
 
