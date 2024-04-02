@@ -1,7 +1,8 @@
-from django.shortcuts import render, HttpResponseRedirect, redirect
+from django.shortcuts import render, HttpResponseRedirect, redirect, HttpResponse
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
+from .models import *
 
 
 def login_page(request):
@@ -53,3 +54,14 @@ def register_page(request):
         return HttpResponseRedirect(request.path_info)
     
     return render(request, 'accounts/register.html')
+
+
+def activate_email(request, email_token):
+    user = Profile.objects.filter(email_token=email_token)
+
+    if not user.exists():
+        return HttpResponse('Invalid email token.')
+    
+    user.is_email_verified = True
+    user.save()
+    return redirect('/')
