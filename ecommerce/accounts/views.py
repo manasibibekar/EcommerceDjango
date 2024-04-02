@@ -13,6 +13,10 @@ def login_page(request):
         if not user_obj.exists():
             messages.warning(request, 'Account does not exist.')
             return HttpResponseRedirect(request.path_info)
+        
+        if not user_obj[0].profile_related.is_email_verified:
+            messages.warning(request, 'Your email is not verified.')
+            return HttpResponseRedirect(request.path_info)
 
         user_obj = authenticate(username=email, password=password)
         if user_obj:
