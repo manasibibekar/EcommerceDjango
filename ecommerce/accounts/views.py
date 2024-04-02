@@ -57,11 +57,10 @@ def register_page(request):
 
 
 def activate_email(request, email_token):
-    user = Profile.objects.filter(email_token=email_token)
-
-    if not user.exists():
-        return HttpResponse('Invalid email token.')
-    
-    user.is_email_verified = True
-    user.save()
-    return redirect('/')
+    try:
+        user = Profile.objects.get(email_token= email_token)
+        user.is_email_verified = True
+        user.save()
+        return redirect('/')
+    except:
+        return HttpResponse('Invalid Email token')
