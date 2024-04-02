@@ -1,23 +1,27 @@
 {% extends "base/base.html"%}
 
-{%  block start %}
+{%  block content %}
 
 
 <div class="container mt-5 pt-5">
     <div class="row">
         
+        {% for product in products %}
         <div class="col-md-3">
             <figure class="card card-product-grid">
-                <div class="img-wrap"> <img src="#"> </div>
+                <div class="img-wrap"> <img src="/media/{{product.product_image_related.first.image}}"> </div>
                 <figcaption class="info-wrap border-top">
-                    <a href='#' class="title">
-                        <b>product name</b></a>
-                    <div class="price mt-2">price</div> <!-- price-wrap.// -->
+                    <a href="{% url 'get_product' product.slug %}" class="title">
+                        <b>{{product.product_name}}</b></a>
+                    <div class="price mt-2">Rs. {{product.price}}</div> <!-- price-wrap.// -->
                 </figcaption>
             </figure> <!-- card // -->
         </div> <!-- col.// -->
 
-
+        {% endfor %}
+      
+        
+       
     </div>
 
     </div>
