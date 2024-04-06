@@ -78,20 +78,23 @@
                 </div>
             </div> <!-- col.// -->
             
+            {% if product.size_variant.count %}
             <div class="form-group col-md">
                     <label>Select size</label>
                     <div class="mt-1">
                       
-                      
+                      {% for size in product.size_variant.all %}
                         <label class="custom-control custom-radio custom-control-inline">
                           <input type="radio" name="select_size" checked="" class="custom-control-input">
                           <div class="custom-control-label">{{size.size_name}}</div>
                         </label>
+                      {% endfor %}
     
                      
     
                     </div>
             </div>
+            {% endif %}
         
             <!-- col.// -->
         </div> <!-- row.// -->
